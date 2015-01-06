@@ -1,0 +1,38 @@
+; roche_dc_distribution make file for local development
+core = "7.x"
+api = "2"
+
+projects[drupal][version] = "7.x"
+; include the d.o. profile base
+includes[] = "drupal-org.make"
+
+; +++++ Libraries +++++
+
+; geoPHP.wiki
+libraries[geoPHP.wiki][directory_name] = "geoPHP.wiki"
+libraries[geoPHP.wiki][type] = "library"
+libraries[geoPHP.wiki][destination] = "libraries"
+libraries[geoPHP.wiki][download][type] = "get"
+libraries[geoPHP.wiki][download][url] = "" ; TODO add download URI
+
+; jquery.cycle
+libraries[jquery.cycle][directory_name] = "jquery.cycle"
+libraries[jquery.cycle][type] = "library"
+libraries[jquery.cycle][destination] = "libraries"
+libraries[jquery.cycle][download][type] = "get"
+libraries[jquery.cycle][download][url] = "" ; TODO add download URI
+
+; markerclusterer
+libraries[markerclusterer][directory_name] = "markerclusterer"
+libraries[markerclusterer][type] = "library"
+libraries[markerclusterer][destination] = "libraries"
+libraries[markerclusterer][download][type] = "get"
+libraries[markerclusterer][download][url] = "" ; TODO add download URI
+
+; storelocator
+libraries[storelocator][directory_name] = "storelocator"
+libraries[storelocator][type] = "library"
+libraries[storelocator][destination] = "libraries"
+libraries[storelocator][download][type] = "get"
+libraries[storelocator][download][url] = "" ; TODO add download URI
+

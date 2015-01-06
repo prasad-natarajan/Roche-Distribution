@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Meter Warranty Registration feature.
+ */
+
+include_once 'meter_warranty_registration.features.inc';

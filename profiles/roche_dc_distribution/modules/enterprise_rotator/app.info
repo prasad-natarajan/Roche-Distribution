@@ -1,0 +1,5 @@
+; Information created by apps module.
+
+version = 7.x-1.0-rc1
+source_app = enterprise_rotator
+download_time = 1418623160
