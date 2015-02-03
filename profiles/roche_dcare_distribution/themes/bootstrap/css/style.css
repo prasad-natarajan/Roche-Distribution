@@ -1,0 +1,74 @@
+.rotating-banner .banner-text{
+	margin-top: 30px;
+	margin-left: 500px !important;
+	height: 320px !important;
+}
+
+.text-white{
+	color: #FFF;
+}
+
+.separator_15{
+	margin-top:15px !important;
+}
+
+.separator_25{
+	margin-top:25px !important;
+}
+
+.views-slideshow-controls-text{
+	position: absolute;
+	z-index: 999;
+	margin-top: 145px;
+	margin-left: 120px;	
+	width: 52px;
+	height: 52px;
+}
+
+.views-slideshow-controls-text-previous{
+	background-image: url(http://localhost/roche_dcare/sites/all/themes/bootstrap/images/slider.png);
+	background-position: 0px 0px;
+	display: block;
+	height: 52px;
+	width: 52px;
+	font-size: 0;
+}
+
+.views-slideshow-controls-text-previous:hover{
+	background-image: url(http://localhost/roche_dcare/sites/all/themes/bootstrap/images/slider.png);
+	background-position: 0px 52px;
+	
+}
+
+.views-slideshow-controls-text-next{
+	background-image: url(http://localhost/roche_dcare/sites/all/themes/bootstrap/images/slider.png);
+	background-position: -52px 0px;
+	display: block;
+	height: 52px;
+	width: 52px;
+	font-size: 0;
+	margin-top: -40px;
+	margin-left: 895px;
+}
+
+.views-slideshow-controls-text-next:hover{
+	background-image: url(http://localhost/roche_dcare/sites/all/themes/bootstrap/images/slider.png);
+	background-position: 52px 52px;
+}
+
+.views-slideshow-controls-text-pause{
+	display:none;
+}
+
+.views-slideshow-controls-bottom{
+	display: none;
+}
+
+.google-store-locator-panel{
+	height: 150px !important;
+	position: absolute;
+	z-index: 999;
+	margin-left: 95px;
+	margin-top: 25px;
+	background-color: #F0F0F0;
+}

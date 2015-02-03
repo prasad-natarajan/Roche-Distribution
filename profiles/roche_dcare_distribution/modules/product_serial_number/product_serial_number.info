@@ -1,0 +1,7 @@
+;$Id$
+
+name = product_serial_number
+description = Product Serial Number Generator.
+package = Custom
+core = 7.x
+files[] = product_serial_number.test

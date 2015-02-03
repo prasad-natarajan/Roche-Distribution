@@ -1,0 +1,181 @@
+; Packaging information for roche_dcare_distribution
+name = "Roche Dcare Distribution"
+description = "Custom Installation Profile"
+exclusive = "1"
+core = "7.x"
+; ----------
+; Dependencies
+; ----------
+; Chaos tool suite
+dependencies[] = ctools
+; Commerce (contrib)
+dependencies[] = google_store_locator
+; Core
+dependencies[] = block
+dependencies[] = color
+dependencies[] = comment
+dependencies[] = contextual
+dependencies[] = dashboard
+dependencies[] = dblog
+dependencies[] = field
+dependencies[] = field_sql_storage
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = filter
+dependencies[] = help
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = node
+dependencies[] = number
+dependencies[] = options
+dependencies[] = overlay
+dependencies[] = path
+dependencies[] = php
+dependencies[] = rdf
+dependencies[] = search
+dependencies[] = shortcut
+dependencies[] = system
+dependencies[] = taxonomy
+dependencies[] = text
+dependencies[] = toolbar
+dependencies[] = update
+dependencies[] = user
+; Custom
+dependencies[] = product_serial_number
+; Date/Time
+dependencies[] = date
+dependencies[] = date_api
+; Development
+dependencies[] = profiler_builder
+dependencies[] = profiler_builder_extras
+; Distribution Management
+dependencies[] = apps
+; Drupal 7 Development
+dependencies[] = calculator
+; Fields
+dependencies[] = addressfield
+dependencies[] = geofield
+dependencies[] = link
+; Other
+dependencies[] = behat_testing
+dependencies[] = entity
+dependencies[] = entity_token
+dependencies[] = forward
+dependencies[] = geocoder
+dependencies[] = geofield_map
+dependencies[] = geophp
+dependencies[] = levelten_apps
+dependencies[] = libraries
+dependencies[] = modules_weight
+dependencies[] = security_questions
+dependencies[] = social_share
+dependencies[] = strongarm
+dependencies[] = token
+; UUID
+dependencies[] = uuid
+; User interface
+dependencies[] = jquery_update
+; Views
+dependencies[] = contextual_range_filter
+dependencies[] = views
+dependencies[] = views_geojson
+dependencies[] = views_slideshow
+dependencies[] = views_slideshow_cycle
+dependencies[] = views_ui
+; Webform
+dependencies[] = webform
+; Features
+dependencies[] = features
+dependencies[] = calcconfiguration
+dependencies[] = enterprise_rotator
+dependencies[] = home_slider
+dependencies[] = meter_warranty_registration
+dependencies[] = uuid_features
+dependencies[] = warranty_registration_config
+
+; ----------
+; Variables
+; ----------
+variables[additional_settings__active_tab_oe_slide] = 'edit-nodeblock-settings'
+variables[admin_theme] = 'seven'
+variables[apps_client_id] = '237654cf5827ea5561.89960811'
+variables[comment_default_mode_oe_slide] = 1
+variables[comment_default_mode_product] = 1
+variables[comment_default_mode_warranty_registration] = 1
+variables[comment_default_per_page_oe_slide] = '50'
+variables[comment_default_per_page_product] = '50'
+variables[comment_default_per_page_warranty_registration] = '50'
+variables[comment_form_location_oe_slide] = 1
+variables[comment_form_location_product] = 1
+variables[comment_form_location_warranty_registration] = 1
+variables[comment_oe_slide] = '0'
+variables[comment_preview_oe_slide] = '1'
+variables[comment_preview_product] = '1'
+variables[comment_preview_warranty_registration] = '1'
+variables[comment_product] = '2'
+variables[comment_subject_field_oe_slide] = 1
+variables[comment_subject_field_product] = 1
+variables[comment_subject_field_warranty_registration] = 1
+variables[comment_warranty_registration] = '2'
+variables[comment_webform] = '0'
+variables[contextual_range_filter_numeric_field_names][field_data_gsl_geofield:gsl_geofield_lat] = 'field_data_gsl_geofield:gsl_geofield_lat'
+variables[contextual_range_filter_numeric_field_names][field_data_gsl_geofield:gsl_geofield_lon] = 'field_data_gsl_geofield:gsl_geofield_lon'
+variables[date_api_version] = '7.2'
+variables[date_default_timezone] = 'Asia/Kolkata'
+variables[field_bundle_settings_node__product][extra_fields][form][title][weight] = '-5'
+variables[field_bundle_settings_node__product][extra_fields][form][path][weight] = '30'
+variables[field_bundle_settings_node__product][extra_fields][form][redirect][weight] = '30'
+variables[field_bundle_settings_node__warranty_registration][extra_fields][form][title][weight] = '0'
+variables[field_bundle_settings_node__warranty_registration][extra_fields][form][path][weight] = '2'
+variables[field_bundle_settings_node__warranty_registration][extra_fields][form][redirect][weight] = '1'
+variables[filter_fallback_format] = 'plain_text'
+variables[forward_theme_template] = 1
+variables[i18n_node_extended_product] = 1
+variables[i18n_node_extended_warranty_registration] = 1
+variables[language_content_type_product] = '0'
+variables[language_content_type_warranty_registration] = '0'
+variables[mail_system][default-system] = 'DefaultMailSystem'
+variables[mail_system][forward] = 'ForwardMailSystem'
+variables[menu_expanded][0] = 'navigation'
+variables[menu_options_product][0] = 'main-menu'
+variables[menu_options_product][1] = 'user-menu'
+variables[menu_options_warranty_registration][0] = 'main-menu'
+variables[menu_parent_oe_slide] = 'main-menu:0'
+variables[menu_parent_product] = 'main-menu:0'
+variables[menu_parent_warranty_registration] = 'main-menu:0'
+variables[node_admin_theme] = 1
+variables[node_options_oe_slide][0] = 'status'
+variables[node_options_page][0] = 'status'
+variables[node_options_product][0] = 'status'
+variables[node_options_product][1] = 'promote'
+variables[node_options_warranty_registration][0] = 'status'
+variables[node_options_warranty_registration][1] = 'promote'
+variables[node_preview_oe_slide] = '0'
+variables[node_preview_product] = '1'
+variables[node_preview_warranty_registration] = '0'
+variables[node_submitted_product] = 1
+variables[node_submitted_warranty_registration] = 1
+variables[save_continue_oe_slide] = 'Save and add fields'
+variables[theme_default] = 'bootstrap'
+variables[user_pictures] = '1'
+variables[user_picture_dimensions] = '1024x1024'
+variables[user_picture_file_size] = '800'
+variables[user_picture_style] = 'thumbnail'
+variables[user_register] = 2
+variables[uuid_features_entity_node][oe_slide] = 'oe_slide'
+variables[uuid_features_entity_node][store_location] = 'store_location'
+variables[uuid_features_entity_node][webform] = 'webform'
+variables[uuid_features_entity_node][article] = 0
+variables[uuid_features_entity_node][page] = 0
+variables[uuid_features_entity_taxonomy_term][tags] = 0
+variables[uuid_features_file_mode] = 'inline'
+variables[uuid_features_file_node][oe_slide] = 'oe_slide'
+variables[uuid_features_file_node][store_location] = 'store_location'
+variables[uuid_features_file_node][webform] = 'webform'
+variables[uuid_features_file_node][article] = 0
+variables[uuid_features_file_node][page] = 0
+variables[uuid_features_file_supported_fields] = 'file, image'
+variables[uuid_features_file_taxonomy_term][tags] = 0
+variables[webform_node_webform] = true
+

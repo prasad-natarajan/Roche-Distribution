@@ -1,0 +1,94 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function product_serial_number_schema() {
+  $schema = array();
+
+ $schema['serial_numbers'] = array(
+    
+    // Example (partial) specification for table "node".
+    'description' => 'insert user details to whom receive the product.',
+    'fields' => array(
+      'sid' => array(
+        'description' => 'The primary identifier for a serial_numbers.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'nid' => array(
+        'description' => 'Node Id for product.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'serial_num' => array(
+        'description' => 'Serial Number  for product.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'uid' => array(
+       'description' => 'Current User Id.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+	   'status' => array(
+       'description' => 'Product Status.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('sid'),
+  );
+
+  $schema['product_transfer'] = array(
+    'description' => 'The base table for nodes.',
+    'fields' => array(
+      'sid' => array(
+        'description' => 'The primary identifier for a product_transfer.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'nid' => array(
+        'description' => 'Node Id for product.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'email' => array(
+        'description' => 'Email Address for register user.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'serial_no' => array(
+        'description' => 'Product Serial Number.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+	   'status' => array(
+        'description' => 'Product Status.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('sid'),
+  );
+
+  return $schema;
+}

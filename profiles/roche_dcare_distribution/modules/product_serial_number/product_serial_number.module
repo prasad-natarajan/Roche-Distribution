@@ -1,0 +1,369 @@
+<?php
+/*
+** After login Redirect to Dashboard page
+*/
+function product_serial_number_user_login(&$edit, $account) {
+	global $user;
+	//header("Location:user/" . $user->uid . "/dashboard"); die();
+}
+/*
+** Alter the webform details
+*/
+function product_serial_number_form_alter(&$form, &$form_state, $form_id) {
+
+	if ($form_id == 'warranty_registration_node_form') {
+		$form['#validate'][] = 'product_serial_number_webform_validate';
+		$form['#submit'][] = 'product_serial_number_webform_submit';
+	}
+	if ($form_id == 'product_transfer_form') {
+		$form['#validate'][] = 'product_transfer_form_validate';
+	}
+	if ($form_id == 'user_register_form') {
+		$form['#submit'][]= 'product_transfer_form_checking';
+	}
+}
+
+/*
+** hook menu 
+*/
+function product_serial_number_menu() {
+	
+	$menuitems['generate/serialnum'] = array(
+	'title' => 'Random number generation',
+	'page callback' => 'drupal_get_form',
+	'page arguments' => array('product_serial_number_form'),
+	'access arguments' => array('access content'),
+	'type' => MENU_CALLBACK,
+	);
+
+	$menuitems['generate/accessing'] = array(
+	'title' => 'My Form Accessing',
+	'page callback' => 'drupal_access_form',
+	'access arguments' => array('access Form content'),
+	'type' => MENU_CALLBACK,
+	);
+
+	$menuitems['product/transfer'] = array(
+	'title' => 'Product Transfer Page',
+	'page callback' => 'drupal_get_form',
+	'page arguments' => array('product_transfer_form'),
+	'access arguments' => array('access content'),
+	'type' => MENU_CALLBACK,
+	);
+
+	$menuitems['product/list'] = array(
+	'title' => 'User Product List',
+	'page callback' => 'product_list_page',
+	'access arguments' => array('access content'),
+	'type' => MENU_CALLBACK,
+	);
+return $menuitems;
+}
+
+function product_serial_number_form($node, &$form_state) {
+
+	$result = db_select('node', 'n')->fields('n')->condition('type', 'product')->execute();
+	while($resvalue = $result -> fetchAssoc() ) {
+		$option_arr[$resvalue['nid']] = $resvalue['title']; 
+	}
+	$form['selectbox'] = array(
+	'#type' => 'select',
+	'#title' => t('Select Product Type'),
+	'#default_value' => @$node->selectbox,
+	'#options' => $option_arr,
+	'#description' => t('Choose an option.'),
+	);
+	$form['field1'] = array(
+	'#type' => 'textfield',
+	'#title' => t('Random number'),
+	'#default_value' => @$node->field1,
+	'#maxlength' => 127,
+	);
+	$form['buttons']['submit'] = array(
+	'#type' => 'submit',
+	'#value' => t('Generate'),
+	'#weight' => 5,
+	);
+	$form['field1'] = array(
+	'#type' => 'textfield',
+	'#title' => t('Random number'),
+	'#validate' => array(
+	'required' => array(true, t('this is required.')),
+	),
+	'#maxlength' => 127,
+	);
+	return $form;
+}
+
+function product_serial_number_form_submit($form, $form_state) {
+
+	if(!empty($form['field1']['#value'])) {
+		genrate_random($form['selectbox']['#value'],$form['field1']['#value']);
+	}
+}
+/*
+** Generate random Numbers 
+*/
+function genrate_random($p_id, $total_numbers) {
+
+	for($i=0; $i < $total_numbers; $i++) {
+		$serial_num=random_string(8);
+		db_insert('serial_numbers')
+		->fields(array('nid','serial_num','uid'))
+		->values(array($p_id,$serial_num,'0'))
+		->execute();
+		$serial_numbers[]=$serial_num;
+	}
+	//$serial_num=implode(',',$serial_num);
+	drupal_set_message ("Serial numbers generated successfully");
+	//return $serial_num;
+}
+
+function randomGen($min, $max, $quantity) {
+
+	$numbers = range($min, $max);
+	shuffle($numbers);
+	return array_slice($numbers, 0, $quantity);
+}
+
+function random_string($length) {
+
+	$key = '';
+	$keys = array_merge(range(0, 9), range('A', 'Z'));
+	for ($i = 0; $i < $length; $i++) {
+		$key .= $keys[array_rand($keys)];
+	}
+	return $key;
+}
+
+function drupal_access_form() {
+
+	$header= array(t('NID') , t('Serial Numbers'),t('Status'));
+	$rows= array();
+	$query = db_select('serial_numbers', 's');
+	$query -> fields('s', array('nid','serial_num','status'));
+	$query -> condition('serial_num', '','!=');
+	$results = $query->execute();
+	
+	foreach($results as $result) {
+		if($result->status == 1){
+			$status = 'Used';
+		} else {
+			$status = 'Unused';
+		} 
+		$rows[] = array(
+			$result->nid,
+			$result->serial_num,
+			$status,
+		);
+	}
+	return theme('table' , array('header'=>$header , 'rows'=>$rows));
+}
+
+/*
+** Webform Custom Validation 
+*/
+function product_serial_number_webform_validate(&$form, &$form_state) {
+
+	$s_no = $form_state['input']['field_serial_number1']['und']['0']['value'];
+	$len = drupal_strlen($s_no);
+	$query = db_select('serial_numbers', 's');
+	$query -> fields('s', array('serial_num'));
+	$query -> condition('serial_num', $s_no,'=');
+	$result =$query->countQuery()->execute()->fetchField();
+	if($len >= 9 || $len <= 7) {
+		form_set_error('', t('Serial no field length Contain 8 only digits!.'));
+	}
+	if (!preg_match("/^[a-zA-Z0-9]*$/",$s_no)) {
+		form_set_error('', t('Only letters and Digits allowed in Serial No!.'));
+	}
+	if($result > 1) {
+		form_set_error('', t('Serial Number not Unique! Please check your administrator.'));
+	} elseif($result == 0) {
+		form_set_error('', t('Serial Number not Exit! Please check your administrator.'));
+	}
+}
+
+/*
+** Custom webform submit for changing the status
+*/
+function product_serial_number_webform_submit($form, &$form_state) {
+
+	$s_no = $form_state['input']['field_serial_number1']['und']['0']['value'];
+	$query = db_select('serial_numbers', 's');
+	$query -> fields('s', array('serial_num'));
+	$query -> condition('serial_num', $s_no,'=');
+	$query -> condition('status', 0,'=');
+	$result = $query->execute()->fetchAssoc();
+	if(!empty($result)) {
+		global $user;
+		$uid = $user -> uid;
+		db_update('serial_numbers') 
+			-> fields(array('uid' => $uid, 'status' => 1, ))
+			-> condition('serial_num', $s_no, '=')
+			-> execute(); 
+	} 	
+}
+
+/*
+** Custom form for Product transfer
+*/
+function product_transfer_form($form, &$form_state) {
+	$form['email'] = array(
+	'#type' => 'textfield',
+	'#title' => t('Email'),
+	'#maxlength' => 127,
+	);
+	$form['buttons']['submit'] = array(
+	'#type' => 'submit',
+	'#value' => t('Transfer'),
+	'#weight' => 5,
+	);
+	return $form;
+}
+/*
+**Product transfer Form email field validate
+*/
+function product_transfer_form_validate($form, $form_state) {
+	$email = $form_state['input']['email'];
+	if (!valid_email_address($email)) {
+		form_set_error('warning','Email format is wrong!!!');
+	}
+}
+
+/*
+**Product transfer Form Submit
+*/
+function product_transfer_form_submit($form, $form_state) {
+
+	if($form['#form_id']=='product_transfer_form'){
+		$email = $form_state['input']['email'];
+		$query = db_select('users', 'u');
+		$query -> fields('u', array('mail','uid'));
+		$query -> condition('mail', $email,'=');
+		$result = $query->execute()->fetchAssoc();
+		if(!empty($result)) {
+			$nid = $_GET['nid'];
+			global $user;
+			$user_id = $result['uid'];
+			$query = db_select('serial_numbers', 's');
+			$query -> fields('s', array('serial_num',));
+			$query -> condition('nid', $nid, '=');
+			$query -> condition('uid', $user->uid, '=');
+			$result = $query->execute()->fetchAssoc();
+			$serial_num = $result['serial_num'];
+
+			//insert user details to whom receive the product 
+			db_insert('serial_numbers')
+			->fields(array('nid','serial_num','uid','status'))
+			->values(array($nid,$serial_num,$user_id,'1'))
+			->execute();
+			
+			//update current user status to '0' and serial num is empty
+			db_update('serial_numbers') 
+			-> fields(array('status' => 0, 'serial_num' => ''))
+			-> condition('nid', $nid, '=')
+			-> condition('uid', $user->uid, '=')
+			-> execute();
+
+			drupal_set_message(t("Product Transferred Successfully "), 'warning');
+			
+		} else {
+			$nid = $_GET['nid'];
+			global $user;
+			$user_id = $result['uid'];
+			$query = db_select('serial_numbers', 's');
+			$query -> fields('s', array('serial_num',));
+			$query -> condition('nid', $nid, '=');
+			$query -> condition('uid', $user->uid, '=');
+			$result = $query->execute()->fetchAssoc();
+			$serial_num = $result['serial_num'];
+			
+			db_insert('product_transfer')
+			->fields(array('nid','email','serial_no','status'))
+			->values(array($nid,$email,$serial_num,'1'))
+			->execute();
+			
+			$to = $email;
+			$from = "satheesh.gopal@accenture.com";
+ 			$subject = "Invite to Register Accopen"; 
+			$body = "Please register accopen for get your product";
+			$params = array(
+				'subject' => $subject,
+				'body' => $body,
+				); 
+			drupal_mail('product_serial_number', 'information', $to, language_default(), $params, $from);
+			drupal_set_message(t("Email is Not Exist"), 'warning');
+		}
+	}
+}
+
+/*
+**Custom Product List Page with transfer Link
+*/
+function product_list_page() { 
+
+	global $user;
+	$uid = $user -> uid;
+	$header= array(t('Product Name') , t('Product Image'),t('Created Date'),t('Transfer Option'));
+	$rows= array();
+	$results= db_query("select nid from {serial_numbers} WHERE uid= ".$uid." AND status=1");
+	foreach($results as $resultnid){
+		$query = new EntityFieldQuery();
+		$query->entityCondition('entity_type', 'node')
+		->entityCondition('bundle', 'product')
+		->propertyCondition('language', 'en')
+		->propertyCondition('status', 1)
+		->propertyCondition('nid',$resultnid->nid,'=');
+		$result = $query->execute();
+		if (isset($result['node'])) {
+			$news_items_nids = array_keys($result['node']);
+			$items = entity_load('node', $news_items_nids);
+			$node = node_load($resultnid->nid);
+			$image = field_get_items('node', $node, 'field_image');
+			$output = theme('image_style', array('style_name' => 'desthumb', 'path' => $items[$resultnid->nid]->field_product_image['und'][0]['uri'], 'getsize' => TRUE, 'attributes' => array('class' => 'thumb', 'width' => '150', 'height' => '162')));	
+			$date = $items[$resultnid->nid]->created;
+			$create_date =date('m/d/Y', $date);
+			$trasfer = "<a href=' ".base_path()."product/transfer?nid=".$resultnid->nid." '>Tranfer</a>" ;
+			$rows[] = array(
+				$items[$resultnid->nid]->title,
+				$output,
+				$create_date,
+				$trasfer,
+			);
+		}
+	}
+	return theme('table' , array('header'=>$header , 'rows'=>$rows));
+}
+function product_transfer_form_checking($form, $form_state) {
+	$email = $form_state['input']['mail'];
+	$query = db_select('product_transfer', 'p');
+	$query -> fields('p', array('serial_no','nid',));
+	$query -> condition('email', $email, '=');
+	$result = $query->execute()->fetchAssoc();
+	$serial_num = $result['serial_no'];
+	$nid = $result['nid'];
+	if(!empty($result)) {
+		$query = db_select('users', 'u');
+		$query -> fields('u', array('uid',));
+		$query -> condition('mail', $email, '=');
+		$results = $query->execute()->fetchAssoc();
+		$user_id = $results['uid'];
+		
+		//update current user status to '0' and serial num is empty
+		db_update('serial_numbers')
+		-> fields(array('status' => 0, 'serial_num' => ''))
+		-> condition('nid', $nid, '=')
+		-> execute();
+		
+		//insert user details to whom receive the product 
+		db_insert('serial_numbers')
+		->fields(array('nid','serial_num','uid','status'))
+		->values(array($nid,$serial_num,$user_id,'1'))
+		->execute();
+		
+		db_delete('product_transfer')
+		->condition('email', $email)
+		->execute();
+	}
+}

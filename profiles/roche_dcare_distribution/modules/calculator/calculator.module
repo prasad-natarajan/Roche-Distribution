@@ -1,0 +1,48 @@
+<?php
+$path = drupal_get_path('module', 'calculator');
+ drupal_add_js($path . '/js/calculator.js');
+ drupal_add_css($path . '/css/main_list.css');
+ 
+//permission level
+function calculator_permission() {
+  return array(
+  	'calculator' => array(
+    	'title' => t('calculator'),
+    	'description' => t('calculator'),
+  	),
+  );
+}
+
+function calculator_menu() {
+
+	$items = array();
+	
+	$items['calculator'] 		= array(
+	
+ 		'title' 			=> '',
+		'page callback' 	=>'calculator',
+		'access arguments'	=> array('access content'),
+		'file' => 'php/calculator.php',
+		'access callback' => TRUE,
+	    'expanded' => TRUE,
+	);
+	return $items;
+}
+
+function calculator_theme(){
+
+	$module_path = drupal_get_path('module','calculator');
+	
+	$themes = array(
+	
+		'calculator' => array(
+			'template' => 'calculator',
+			'variables' => array('items' => NULL),
+			'path' => $module_path.'/template',
+		),
+	);
+	return $themes;
+}
+
+
+?>

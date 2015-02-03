@@ -1,0 +1,8 @@
+name = calculator
+description = A1C calculator for blood sugar.
+package = Drupal 7 Development
+core = 7.x
+files[] = first.module
+
+;dependencies[] = autoload
+;php = 5.2

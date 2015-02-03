@@ -1,0 +1,60 @@
+<?php
+
+/**
+ * @file
+ * Tests for product_serial_number.module.
+ */
+
+class ProductSerialNumberTestWarranty extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Serial Number Creation and Warranty Registration test cases',
+      'description' => 'Testing Warranty Registration functionality of Product Serial Number module.',
+      'group' => 'Product Serial Number',
+    );
+  }
+
+  function setUp() {
+    parent::setUp('product_serial_number');
+
+    	
+    // User with admin permissions.
+	$roles = user_roles();
+
+    // Find the index for the role we want to assign to the user.
+    $index = array_search('administrator', $roles);
+
+    // Get the permissions for the role.
+    $permissions = user_role_permissions(array(array_search('administrator', $roles) => 'administrator'));
+
+    // Create the user with the admin permissions.
+    $this->admin_user = $this->drupalCreateUser(array_keys($permissions[$index]));  
+  }
+
+  /**
+   * Test creating serial numbers.
+   */
+  function testCreatingSerailNumbers() {
+    $this->drupalLogin($this->admin_user);
+	//creating a content type product
+	$type = $this->drupalCreateContentType(array('type' => 'product'));
+	// creating a product
+	$pro = array(
+	  'title' => 'Test Product',
+	);
+	$this->drupalPost('node/add/product', $pro, t('Save'));
+	$pro_nid = db_query("SELECT nid FROM {node} WHERE title='Test Product'")->fetchField();	
+	//creating serial numbers
+	$this->drupalGet('generate/serialnum');
+	$this->assertText('Select Product Type', 'We need to select a product type');
+	$ser_input = array(
+      'selectbox' => $pro_nid,
+      'field1' => 4,      
+    );
+	$num_records_before = db_query('SELECT COUNT(*) FROM {serial_numbers} WHERE nid = '.$pro_nid)->fetchField();
+    $this->drupalPost('generate/serialnum', $ser_input, t('Generate'));
+    $num_records_after = db_query('SELECT COUNT(*) FROM {serial_numbers} WHERE nid = '.$pro_nid)->fetchField();
+    $this->assertEqual($num_records_after, $num_records_before + 4, t('Inserted Successfully.'));
+  }  
+}

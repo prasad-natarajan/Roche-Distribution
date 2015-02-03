@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Warranty Registration Config feature.
+ */
+
+include_once 'warranty_registration_config.features.inc';

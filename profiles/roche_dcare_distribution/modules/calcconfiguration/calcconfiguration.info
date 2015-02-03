@@ -1,0 +1,10 @@
+name = calc-cofiguration
+description = Description
+core = 7.x
+package = Features
+version = 7.x-1.0
+project = calcconfiguration
+features[features_api][] = api:2
+features[user_permission][] = calculator
+features_exclude[dependencies][calculator] = calculator
+features_exclude[dependencies][features] = features
